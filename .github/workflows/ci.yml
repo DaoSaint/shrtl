@@ -1,0 +1,48 @@
+name: ci
+
+on:
+    pull_request:
+    push:
+        branches: [main]
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: ci-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    check:
+        name: format, types, tests
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: 1.4.3
+
+            - name: Install
+              run: bun install --frozen-lockfile
+
+            - name: Format
+              run: bun run format:check
+
+            - name: Types
+              run: bun run typecheck
+
+            - name: Tests
+              run: bun test
+
+    image:
+        name: container builds and answers
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Build and smoke test
+              run: sh scripts/smoke-docker.sh

@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "target": "ES2023",
+        "lib": ["ES2023"],
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
+        "types": ["bun"],
+
+        "strict": true,
+        "noUncheckedIndexedAccess": true,
+        "verbatimModuleSyntax": true,
+        "isolatedModules": true,
+
+        // no build step: imports carry .ts, only erasable syntax is allowed
+        "noEmit": true,
+        "allowImportingTsExtensions": true,
+        "erasableSyntaxOnly": true,
+
+        "jsx": "react-jsx",
+        "jsxImportSource": "hono/jsx",
+
+        "skipLibCheck": true
+    },
+    "include": ["src", "test", "drizzle.config.ts"]
+}

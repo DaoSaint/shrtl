@@ -1,0 +1,17 @@
+services:
+    shrtl:
+        build: .
+        image: shrtl:dev
+        restart: unless-stopped
+        ports:
+            - "3000:3000"
+        volumes:
+            - shrtl-data:/data
+        environment:
+            DATABASE_PATH: /data/shrtl.db
+            PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost:3000}
+            SESSION_TTL_HOURS: ${SESSION_TTL_HOURS:-720}
+            TRUST_PROXY: ${TRUST_PROXY:-}
+
+volumes:
+    shrtl-data:
