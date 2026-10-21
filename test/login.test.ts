@@ -6,6 +6,14 @@ import { PASSWORD, postForm, sessionCookie, testApp, withAccount } from "./helpe
 const password = PASSWORD;
 const wrong = "wrong horse battery";
 
+test("GET /login sends a fresh instance to setup", async () => {
+    const { app } = testApp();
+    const res = await app.request("/login");
+
+    assert.equal(res.status, 302);
+    assert.equal(res.headers.get("location"), "/setup");
+});
+
 test("GET /login renders the form once an account exists", async () => {
     const { app } = await withAccount();
     const res = await app.request("/login");
