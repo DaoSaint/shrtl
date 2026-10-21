@@ -1,10 +1,12 @@
 {
     "compilerOptions": {
         "target": "ES2023",
-        "lib": ["ES2023"],
+        "lib": ["ES2023", "DOM", "DOM.Iterable"],
         "module": "nodenext",
         "moduleResolution": "nodenext",
         "types": ["bun"],
+
+        "paths": { "@/*": ["./src/*"] },
 
         "strict": true,
         "noUncheckedIndexedAccess": true,
@@ -21,5 +23,6 @@
 
         "skipLibCheck": true
     },
-    "include": ["src", "test", "drizzle.config.ts"]
+    "include": ["src", "test", "drizzle.config.ts"],
+    "exclude": ["src/client"]
 }

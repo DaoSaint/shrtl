@@ -9,3 +9,6 @@ node_modules/
 data/
 
 .DS_Store
+
+# generated
+public/
