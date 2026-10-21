@@ -25,6 +25,7 @@ COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=assets /app/public ./public
 COPY package.json tsconfig.json drizzle.config.ts uno.config.ts ./
 COPY drizzle ./drizzle
+COPY assets ./assets
 COPY src ./src
 
 RUN mkdir -p /data && chown -R bun:bun /data /app

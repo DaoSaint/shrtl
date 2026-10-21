@@ -12,6 +12,8 @@ export const Layout = ({ title, children }: { title: string; children?: Child })
             <meta charset="utf-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <title>{title}</title>
+            <link rel="icon" href="/favicon.png" type="image/png" />
+            <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
             <link rel="stylesheet" href="/uno.css" />
         </head>
         <body class="relative min-h-screen bg-ink text-fg antialiased">
