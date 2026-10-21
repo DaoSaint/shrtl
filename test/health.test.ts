@@ -40,3 +40,18 @@ test("unknown paths render the terminal 404 page", async () => {
     assert.match(body, /no such file or directory/);
     assert.match(body, /\/nothing\/here/);
 });
+
+test("the icons are served and referenced", async () => {
+    const { app } = testApp();
+
+    const icon = await app.request("/favicon.png");
+    assert.equal(icon.status, 200);
+    assert.equal(icon.headers.get("content-type"), "image/png");
+
+    const touch = await app.request("/apple-touch-icon.png");
+    assert.equal(touch.status, 200);
+
+    const page = await (await app.request("/setup")).text();
+    assert.match(page, /rel="icon" href="\/favicon.png"/);
+    assert.match(page, /rel="apple-touch-icon" href="\/apple-touch-icon.png"/);
+});

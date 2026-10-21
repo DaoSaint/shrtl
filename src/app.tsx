@@ -30,6 +30,8 @@ export const createApp = (db: Db) => {
     );
     app.use(bodyLimit({ maxSize: 32 * 1024 }));
 
+    app.use("/favicon.png", serveStatic({ root: "./assets" }));
+    app.use("/apple-touch-icon.png", serveStatic({ root: "./assets" }));
     app.use("/uno.css", serveStatic({ root: "./public" }));
     app.use("/dashboard.js", serveStatic({ root: "./public" }));
 
