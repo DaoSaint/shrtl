@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { getCookie } from "hono/cookie";
 import type { Db } from "@/lib/db/client.ts";
+import { ownerExists } from "@/lib/account.ts";
 import { listLinks, PAGE_SIZE, type Visibility } from "@/lib/links.ts";
 import { clearSession, currentUser, endSession, SESSION_COOKIE } from "@/lib/session.ts";
 import { document } from "@/views/layout.tsx";
@@ -13,6 +14,8 @@ export const homeRoutes = (db: Db) => {
     const routes = new Hono();
 
     routes.get("/", async (c) => {
+        if (!(await ownerExists(db))) return c.redirect("/setup");
+
         const user = await currentUser(db, c);
         if (!user) return c.redirect("/login");
 

@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { getConnInfo } from "hono/bun";
 import type { Context } from "hono";
 import type { Db } from "@/lib/db/client.ts";
-import { owner, passwordMatches } from "@/lib/account.ts";
+import { owner, ownerExists, passwordMatches } from "@/lib/account.ts";
 import { createRateLimit } from "@/lib/rate-limit.ts";
 import { attachSession, currentUser, startSession } from "@/lib/session.ts";
 import { document } from "@/views/layout.tsx";
@@ -30,9 +30,11 @@ export const loginRoutes = (
 ) => {
     const routes = new Hono();
 
-    routes.get("/", async (c) =>
-        (await currentUser(db, c)) ? c.redirect("/") : c.html(await document(<LoginPage />)),
-    );
+    routes.get("/", async (c) => {
+        if (!(await ownerExists(db))) return c.redirect("/setup");
+        if (await currentUser(db, c)) return c.redirect("/");
+        return c.html(await document(<LoginPage />));
+    });
 
     routes.post("/", async (c) => {
         const account = await owner(db);

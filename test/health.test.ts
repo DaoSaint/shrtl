@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { testApp } from "./helpers.ts";
+import { testApp, withAccount } from "./helpers.ts";
 
 test("GET /healthz returns ok", async () => {
     const { app } = testApp();
@@ -15,9 +15,18 @@ test("unknown paths are 404", async () => {
     assert.equal(res.status, 404);
 });
 
-test("GET / sends unauthenticated visitors to the login page", async () => {
+test("GET / sends a fresh instance to setup", async () => {
     const { app } = testApp();
     const res = await app.request("/");
+
+    assert.equal(res.status, 302);
+    assert.equal(res.headers.get("location"), "/setup");
+});
+
+test("GET / sends a signed-out instance to login", async () => {
+    const { app } = await withAccount();
+    const res = await app.request("/");
+
     assert.equal(res.status, 302);
     assert.equal(res.headers.get("location"), "/login");
 });
